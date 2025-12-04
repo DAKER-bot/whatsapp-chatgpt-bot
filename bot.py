@@ -1,3 +1,23 @@
+from flask import Flask, request
+import requests
+import openai
+
+app = Flask(__name__)
+
+# 🔥 VERIFY TOKEN que tu mets aussi sur Meta
+VERIFY_TOKEN = "EAAMW95pe8HlQBQJhRzCICH4J10rLG4l1tfcRUrucPruqFeZAKpZBIQZBJN2CFRJZCpb0K6Tk0fIbZCIM86iyL5Nzc6YKDgP0QQcRhZCPUbUcMT2PVF5"
+
+# 🚀 Route GET utilisée pour vérifier le webhook Meta
+@app.route('/webhook', methods=['GET'])
+def verify():
+    mode = request.args.get("hub.mode")
+    token = request.args.get("hub.verify_token")
+    challenge = request.args.get("hub.challenge")
+
+    if mode == "subscribe" and token == VERIFY_TOKEN:
+        return challenge, 200
+    else:
+        return "Verification failed", 403
 from flask import Flask, request, jsonify
 import requests
 import openai
